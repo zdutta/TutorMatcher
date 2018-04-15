@@ -1,0 +1,2 @@
+SECRET_KEY = 'abc1324'
+SQLALCEHMY_DATABASE_URI='mysql://db_amd'
