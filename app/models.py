@@ -8,7 +8,7 @@ class Tutor(UserMixin,db.Model):
 	"""
 	__tablename__ = 'tutors'
 
-	tutor_id = db.Column(db.Integer,primary_key=True)
+	id = db.Column(db.Integer,primary_key=True)
 	email = db.Column(db.String(60),index=True,unique=True)
 	username = db.Column(db.String(60),index=True,unique=True)
 	first_name = db.Column(db.String(60),index = True)
@@ -39,7 +39,7 @@ class Student(UserMixin,db.Model):
 	"""
 	__tablename__ = 'students'
 
-	student_id = db.Column(db.Integer,primary_key=True)
+	id = db.Column(db.Integer,primary_key=True)
 	email = db.Column(db.String(60),index=True,unique=True)
 	username = db.Column(db.String(60),index=True,unique=True)
 	first_name = db.Column(db.String(60),index = True)
@@ -66,7 +66,10 @@ class Student(UserMixin,db.Model):
 
 #setting up user_loader
 @login_manager.user_loader
-def load_user(user_id,user_type):
+#def load_user(user_id,user_type):
+def load_user(user_id):
+	user_type='student'
+	#make sure to delete this statement later
 	if(user_type == 'tutor'):
 		return Tutor.query.get(int(user_id))
 	elif(user_type=='student'):
