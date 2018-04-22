@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import PasswordField, StringField, SubmitField, ValidationError
+from wtforms import PasswordField, StringField, SubmitField, ValidationError, SelectField
 from wtforms.validators import DataRequired, Email, EqualTo
 
 from ..models import Student,Tutor
@@ -17,6 +17,7 @@ class RegistrationForm(FlaskForm):
                                         EqualTo('confirm_password')
                                         ])
     confirm_password = PasswordField('Confirm Password')
+    #userType = SelectField("User Type",choices=['Tutor','Student'])
     submit = SubmitField('Register')
 
     def validate_email(self, field):
