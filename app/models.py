@@ -7,7 +7,7 @@ class User(UserMixin,db.Model):
 	"""
 	Create User table
 	"""
-	__tablename__ = 'tutors'
+	__tablename__ = 'users'
 
 	id = db.Column(db.Integer,primary_key=True,nullable=False,autoincrement=True)
 	email = db.Column(db.String(60),index=True,unique=True)
@@ -17,6 +17,7 @@ class User(UserMixin,db.Model):
 	password_hash = db.Column(db.String(128))
 	role = db.Column(db.String(128)) #student or tutor 
 	is_admin = db.Column(db.Boolean,default=False)
+	__mapper_args__ = {'polymorphic_identity':'users', 'polymorphic_on' : role}
 
 	@property
 	def password(self):
@@ -35,83 +36,22 @@ class User(UserMixin,db.Model):
 	def __repr__(self):
 		return '<User; {}'.format(self.username)
 
-class Tutor(UserMixin,db.Model):
-	"""
-	Create User table
-	"""
-	__tablename__ = 'tutors'
 
-	id = db.Column(db.Integer,primary_key=True,nullable=False,autoincrement=True)
-	email = db.Column(db.String(60),index=True,unique=True)
-	username = db.Column(db.String(60),index=True,unique=True)
-	first_name = db.Column(db.String(60),index = True)
-	last_name = db.Column(db.String(60),index = True)
-	password_hash = db.Column(db.String(128))
-	is_admin = db.Column(db.Boolean,default=False)
+class Student(User):
+	__tablename__='students'
+	__mapper_args__={'polymorphic_identity':'student'}
+	id = db.Column(db.Integer, db.ForeignKey('users.id'),primary_key=True)
+	needs=db.Column(db.String(200))
 
-	@property
-	def password(self):
-		#Keep password from being accessed
-		raise AttributeError('password is not a readable attribute')
-
-	@password.setter
-	def password(self,password):
-		#set password to hashed password
-		self.password_hash = generate_password_hash(password)
-
-	def verify_password(self,password):
-		#check if hashed password matches actual password
-		return check_password_hash(self.password_hash,password)
-
-	def __repr__(self):
-		return '<Tutor; {}'.format(self.username)
-
-
-class Student(UserMixin,db.Model):
-	"""
-	Create User table
-	"""
-	__tablename__ = 'students'
-
-	id = db.Column(db.Integer,primary_key=True,nullable=False,autoincrement=True)
-	email = db.Column(db.String(60),index=True,unique=True)
-	username = db.Column(db.String(60),index=True,unique=True)
-	first_name = db.Column(db.String(60),index = True)
-	last_name = db.Column(db.String(60),index = True)
-	password_hash = db.Column(db.String(128))
-	is_admin = db.Column(db.Boolean,default=False)
-
-	@property
-	def password(self):
-		#Keep password from being accessed
-		raise AttributeError('password is not a readable attribute')
-
-	@password.setter
-	def password(self,password):
-		#set password to hashed password
-		self.password_hash = generate_password_hash(password)
-
-	def verify_password(self,password):
-		#check if hashed password matches actual password
-		return check_password_hash(self.password_hash,password)
-
-	def __repr__(self):
-		return '<Student; {}'.format(self.username)
-
-	def load_user(user_id):
-		return Student.query.get(int(user_id))
-
+class Tutor(User):
+	__tablename__='tutors'
+	__mapper_args__={'polymorphic_identity':'tutor'}
+	id = db.Column(db.Integer, db.ForeignKey('users.id'),primary_key=True)
+	subjects=db.Column(db.String(200))
+	bio=db.Column(db.String(200))
 
 
 #setting up user_loader
 @login_manager.user_loader
-#def load_user(user_id,user_type):
 def load_user(user_id):
-	user_type='student'
-	#make sure to delete this statement later
-	if(user_type == 'tutor'):
-		return Tutor.query.get(int(user_id))
-	elif(user_type=='student'):
-		return Student.query.get(int(user_id))
-	#return User.query.get(int(user_id))
-
+	return User.query.get(int(user_id))
