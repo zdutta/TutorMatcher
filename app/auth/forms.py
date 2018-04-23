@@ -17,7 +17,7 @@ class RegistrationForm(FlaskForm):
                                         EqualTo('confirm_password')
                                         ])
     confirm_password = PasswordField('Confirm Password')
-    #userType = SelectField("User Type",choices=['Tutor','Student'])
+    userType = SelectField('Registering as a',choices=[('tutor','Tutor'),('student','Student')])
     submit = SubmitField('Register')
 
     def validate_email(self, field):
@@ -34,4 +34,5 @@ class LoginForm(FlaskForm):
     """
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
+    userType = SelectField('Logging in as a',choices=[('tutor','Tutor'),('student','Student')])
     submit = SubmitField('Login')

@@ -15,16 +15,22 @@ def register():
     """
     form = RegistrationForm()
     if form.validate_on_submit():
-        student = Student(email=form.email.data,
-                            username=form.username.data,
-                            first_name=form.first_name.data,
-                            last_name=form.last_name.data,
-                            password=form.password.data)
-
-        # add student to the database
-        db.session.add(student)
+        if(form.userType.data=='student'):      
+            student = Student(email=form.email.data,
+                                username=form.username.data,
+                                first_name=form.first_name.data,
+                                last_name=form.last_name.data,
+                                password=form.password.data)
+            db.session.add(student)
+        elif(form.userType.data=='tutor'):
+            tutor = Tutor(email=form.email.data,
+                                username=form.username.data,
+                                first_name=form.first_name.data,
+                                last_name=form.last_name.data,
+                                password=form.password.data)
+            db.session.add(tutor) 
         db.session.commit()
-        flash('You have successfully registered! You may now login.')
+        flash('You have successfully registered as a ' + form.userType.data + ' ! You may now login.')
 
         # redirect to the login page
         return redirect(url_for('auth.login'))
@@ -40,21 +46,36 @@ def login():
     """
     form = LoginForm()
     if form.validate_on_submit():
+        if(form.userType.data=='student'):
 
-        # check whether student exists in the database and whether
-        # the password entered matches the password in the database
-        student = Student.query.filter_by(email=form.email.data).first()
-        if student is not None and student.verify_password(
-                form.password.data):
-            # log student in
-            login_user(student)
+            # check whether student exists in the database and whether
+            # the password entered matches the password in the database
+            student = Student.query.filter_by(email=form.email.data).first()
+            if student is not None and student.verify_password(
+                    form.password.data):
+                # log student in
+                login_user(student)
 
-            # redirect to the dashboard page after login
-            return redirect(url_for('home.dashboard'))
+                # redirect to the dashboard page after login
+                return redirect(url_for('home.dashboard'))
 
-        # when login details are incorrect
-        else:
-            flash('Invalid email or password.')
+            # when login details are incorrect
+            else:
+                flash('Invalid email or password.')            
+        elif(form.userType.data=='tutor'):
+            
+            tutor = Tutor.query.filter_by(email=form.email.data).first()
+            if tutor is not None and tutor.verify_password(
+                    form.password.data):
+                # log tutor in
+                login_user(tutor)
+
+                # redirect to the dashboard page after login
+                return redirect(url_for('home.dashboard'))
+
+            # when login details are incorrect
+            else:
+                flash('Invalid email or password.')
 
     # load login template
     return render_template('auth/login.html', form=form, title='Login')
