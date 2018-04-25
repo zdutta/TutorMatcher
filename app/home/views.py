@@ -12,4 +12,3 @@ def homepage():
 @login_required
 def dashboard():
 	return render_template('home/dashboard.html',title="Dashboard")
-
