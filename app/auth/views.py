@@ -1,4 +1,4 @@
-from flask import flash, redirect, render_template, url_for
+from flask import flash, redirect, render_template, url_for, session
 from flask_login import login_required, login_user, logout_user
 
 from . import auth
@@ -54,7 +54,9 @@ def login():
         if user is not None and user.verify_password(
                 form.password.data):
             # log student in
+            session['username'] = user.username
             login_user(user)
+            print (session['username'])
 
             # redirect to the dashboard page after login
             return redirect(url_for('home.dashboard'))
