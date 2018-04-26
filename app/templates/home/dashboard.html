@@ -12,13 +12,10 @@
 
                     <body>
                       <div class="card-container">
-                        <div class="card">Das Surma</div>
-                        <div class="card">Aerotwist</div>
-                        <div class="card">Kinlanimus Maximus</div>
-                        <div class="card">Addyoooooooooo</div>
-                        <div class="card">Gaunty McGaunty Gaunt</div>
-                        <div class="card">Jack Archibungle</div>
-                        <div class="card">Sam "The Dutts" Dutton</div>
+                        {%for tutor in tutors%}
+                        
+                        <div class="card">{{tutor.username}}</div>
+                        {% endfor %}
                       </div>
             </body>
                 </div>
