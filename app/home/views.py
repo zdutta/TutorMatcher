@@ -21,7 +21,7 @@ def dashboard():
 	matched_id = db.session.query(Match.tutor_id).filter(Match.student_id==current_user.id)
 	return render_template('home/dashboard.html',title="Dashboard",tutors=tutors,matched_id=matched_id)
 
-@home.route('/match/<username>')
+@home.route('/match/<username>',methods=['POST'])
 @login_required
 def match(username):
 	user = User.query.filter_by(username=username).first()
