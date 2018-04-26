@@ -4,11 +4,17 @@ from app import db, login_manager
 
 
 
-followers=db.Table(
-	'followers',
-	db.Column('student_id',db.Integer, db.ForeignKey('users.id')),
-	db.Column('tutor_id',db.Integer, db.ForeignKey('users.id'))
-)
+# followers=db.Table(
+# 	'followers',
+# 	db.Column('student_id',db.Integer, db.ForeignKey('users.id')),
+# 	db.Column('tutor_id',db.Integer, db.ForeignKey('users.id'))
+# )
+
+class Match(db.Model):
+	__tablename__='matches'
+	id = db.Column(db.Integer,primary_key=True,nullable=False,autoincrement=True)
+	student_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+	tutor_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
 
 class User(UserMixin,db.Model):
@@ -27,22 +33,22 @@ class User(UserMixin,db.Model):
 	is_admin = db.Column(db.Boolean,default=False)
 	__mapper_args__ = {'polymorphic_identity':'users', 'polymorphic_on' : role}
 
-	followed = db.relationship(
-		'User', secondary=followers,
-		primaryjoin=(followers.c.student_id==id),
-		secondaryjoin=(followers.c.tutor_id==id),
-		backref=db.backref('followers',lazy='dynamic'),
-		lazy='dynamic'
-		)
+	# followed = db.relationship(
+	# 	'User', secondary=followers,
+	# 	primaryjoin=(followers.student_id==id),
+	# 	secondaryjoin=(followers.tutor_id==id),
+	# 	backref=db.backref('followers',lazy='dynamic'),
+	# 	lazy='dynamic'
+	# 	)
 
-	def follow(self,user):
-		# if not self.is_following(user):
-		self.followed.append(user)
-	def unfollow(self,user):
-		# if self.is_following(user):
-		self.followed.remove(user)
-	# def is_following(self,user):
-	# 	return self.followed.filter(followers.c.tutor_id == user.id).count() > 0
+	# def follow(self,user):
+	# 	# if not self.is_following(user):
+	# 	self.followed.append(user)
+	# def unfollow(self,user):
+	# 	# if self.is_following(user):
+	# 	self.followed.remove(user)
+	# # def is_following(self,user):
+	# # 	return self.followed.filter(followers.c.tutor_id == user.id).count() > 0
 
 	@property
 	def password(self):

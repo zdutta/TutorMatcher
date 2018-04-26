@@ -13,8 +13,9 @@
                     <body>
                       <div class="card-container">
                         {%for tutor in tutors%}
-                        
-                        <div class="card">{{tutor.username}}</div>
+                            {%if (tutor.id, ) not in matched_id %}
+                                <div class="card">{{tutor.username}}</div>
+                            {%endif%}
                         {% endfor %}
                       </div>
             </body>
