@@ -47,11 +47,11 @@ def match(username):
 		return redirect(url_for('home.dashboard'))
 	#current_user.follow(user)
 	print(username)
-	client.messages.create(
-		#to="+15104023847",
-		to="+"+str(user.phonenumber),
-		from_="+15103301938",
-		body=current_user.first_name+" would like to connect with you for scholarly needs including "+current_user.needs + ". Contact them at " + str(current_user.phonenumber))
+# 	client.messages.create(
+# 		#to="+15104023847",
+# 		to="+"+str(user.phonenumber),
+# 		from_="+15103301938",
+# 		body=current_user.first_name+" would like to connect with you for scholarly needs including "+current_user.needs + ". Contact them at " + str(current_user.phonenumber))
 
 	match = Match(student_id=current_user.id,tutor_id=user.id)
 	db.session.add(match)
