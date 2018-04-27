@@ -49,7 +49,7 @@ def match(username):
 	print(username)
 	client.messages.create(
 		#to="+15104023847",
-		to=str(user.phonenumber),
+		to=user.phonenumber,
 		from_="+15103301938",
 		body=current_user.first_name+" would like to connect with you for scholarly needs including "+current_user.needs + ". Contact them at " + str(current_user.phonenumber))
 
