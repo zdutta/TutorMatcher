@@ -1,4 +1,4 @@
-from flask import render_template,flash,url_for,redirect, jsonify, request
+from flask import render_template,flash,url_for,redirect, jsonify, request,session
 from flask_login import login_required, current_user #might not be required
 
 from . import matches
@@ -18,7 +18,13 @@ pusher_client = pusher.Pusher(
 @matches.route('/messages')
 @login_required
 def messages():
-	messages = Messages.query.all()
+	messages = Messages.query.filter_by()
+	matched = None
+	if session['userType'] == 'student':
+		matches = Match.query.filter_by(student_id=current_user.id).first()
+	else:
+		matches = Match.query.filter_by(tutor_id=current_user.id).first()
+
 	return render_template('matches/messages.html', title="Messages", messages=messages)
 
 @matches.route('/unmatch/<username>')
@@ -29,20 +35,17 @@ def unmatch(username):
 		return redirect(url_for('matches.messages'))
 	Match.query.filter_by(student_id=current_user.id,tutor_id=user.id).delete()
 	db.session.commit()
-	flash('You have unmatched with {}!'.format(username))
-	return redirect(url_for('matches.messages'))
+	return redirect(url_for('home.dashboard'))
 
-@matches.route('/message', methods=['POST'])
-def message():
+@matches.route('/message/<receiver>', methods=['POST'])
+def message(receiver):
 	try:
 		username = current_user.username
 		message = request.form.get('message')
-		#receiverUser = User.query.filter_by(username=receiver).first()
-		new_message = Messages(username=username, sender_id=current_user.id,receiver_id=5, message=message)
+		receiverUser = User.query.filter_by(username=receiver).first()
+		new_message = Messages(username=username, sender_id=current_user.id,receiver_id=receiverUser.id, message=message)
 		db.session.add(new_message)
 		db.session.commit()
-		print new_message.message
-		print current_user.id
 		#trigger event on both user channels with one call:
 		#var channels = [ 'private_notifications_user1', 'private_notifications_user2'];
 		#var eventData = {
@@ -51,7 +54,7 @@ def message():
 		#	'chat_with'   : 'user2'
 		#}
 
-		pusher_client.trigger('chat-channel', 'new-message', {'username' : username, 'message': message})
+		pusher_client.trigger('boi', 'new-message', {'username' : username, 'message': message})
 		
 		return jsonify({'result' : "success"})
 	except:

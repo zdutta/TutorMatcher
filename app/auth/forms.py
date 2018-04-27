@@ -42,7 +42,6 @@ class RegistrationFormStudent(FlaskForm):
                                         EqualTo('confirm_password')
                                         ])
     confirm_password = PasswordField('Confirm Password')
-    email = StringField('Email', validators=[DataRequired(), Email()])
     needs = StringField('Needs:', validators=[DataRequired()])
     submit = SubmitField('Register')
     def validate_email(self, field):

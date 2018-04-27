@@ -14,12 +14,18 @@ def homepage():
 @login_required
 def dashboard():
 	#only display the ones that have not been matched
-
-	tutors = Tutor.query.all()
-	# matches = Match.query.filter_by(student_id=current_user.id)
-	# print (matches)
-	matched_id = db.session.query(Match.tutor_id).filter(Match.student_id==current_user.id)
-	return render_template('home/dashboard.html',title="Dashboard",tutors=tutors,matched_id=matched_id)
+	if session['userType']=='student':
+		tutors = Tutor.query.all()
+		# matches = Match.query.filter_by(student_id=current_user.id)
+		# print (matches)
+		matched_id = db.session.query(Match.tutor_id).filter(Match.student_id==current_user.id)
+		return render_template('home/dashboard.html',title="Dashboard",tutors=tutors,matched_id=matched_id)
+	else:
+		students = Student.query.all()
+		matched_id = db.session.query(Match.student_id).filter(Match.tutor_id==current_user.id)
+		print matched_id[0]
+		print current_user.id
+		return render_template('home/dashboard2.html',title="Dashboard",students=students,matched_id=matched_id)
 
 @home.route('/match/<username>',methods=['POST'])
 @login_required
@@ -31,5 +37,4 @@ def match(username):
 	match = Match(student_id=current_user.id,tutor_id=user.id)
 	db.session.add(match)
 	db.session.commit()
-	flash('You have matched with {}!'.format(username))
 	return redirect(url_for('home.dashboard'))

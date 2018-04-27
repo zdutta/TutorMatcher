@@ -46,7 +46,7 @@ def register_tutor():
                             last_name=form.last_name.data,
                             password=form.password.data,
                             role='tutor',
-                            subject=form.expertise.data,
+                            subjects=form.expertise.data,
                             bio=form.bio.data,
                             )
         db.session.add(tutor) 

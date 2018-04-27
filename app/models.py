@@ -19,7 +19,8 @@ from app import db, login_manager
 # 	match_id = db.Column(db.Integer, db.ForeignKey('matches.id'))
 
 class Messages(db.Model):
-	id = db.Column(db.Integer, primary_key=True)
+	__tablename__="messages"
+	id = db.Column(db.Integer, primary_key=True,nullable=False,autoincrement=True)
 	username = db.Column(db.String(50))
 	sender_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 	receiver_id = db.Column(db.Integer, db.ForeignKey('users.id'))
