@@ -55,6 +55,7 @@ def login():
                 form.password.data):
             # log student in
             session['username'] = user.username
+            session['userType'] = user.role
             login_user(user)
             print (session['username'])
 
