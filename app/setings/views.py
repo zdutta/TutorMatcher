@@ -24,7 +24,7 @@ def settings():
         form = TutorSettingsForm()
         user=Tutor.query.filter_by(id=current_user.id).first()
         user.subjects = form.subjects.data
-        user.bio = form.subjects.bio
+        user.bio = form.subjects.data
         db.session.commit()      
 
 
