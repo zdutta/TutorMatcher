@@ -10,20 +10,28 @@ from app import db, login_manager
 # 	db.Column('tutor_id',db.Integer, db.ForeignKey('users.id'))
 # )
 
+# class Messages(db.Model):
+# 	__tablename__ = 'messages'
+# 	id=db.Column(db.Integer, primary_key=True,nullable=False,autoincrement=True)
+# 	sender_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+# 	receiver_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+# 	message_text = db.Column(db.String(500))
+# 	match_id = db.Column(db.Integer, db.ForeignKey('matches.id'))
+
 class Messages(db.Model):
-	__tablename__ = 'messages'
-	id=db.Column(db.Integer, primary_key=True,nullable=False,autoincrement=True)
+	id = db.Column(db.Integer, primary_key=True)
+	username = db.Column(db.String(50))
 	sender_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 	receiver_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-	message_text = db.Column(db.String(500))
-	match_id = db.Column(db.Integer, db.ForeignKey('matches.id'))
+	message = db.Column(db.String(500))
+
 
 class Match(db.Model):
 	__tablename__='matches'
 	id = db.Column(db.Integer,primary_key=True,nullable=False,autoincrement=True)
 	student_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 	tutor_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-	messages = db.relationship('Messages', backref="match", cascade="all, delete-orphan", lazy='dynamic')
+	#messages = db.relationship('Messages', backref="match", cascade="all, delete-orphan", lazy='dynamic')
 
 
 class User(UserMixin,db.Model):

@@ -20,11 +20,11 @@ def register_student():
                             first_name=form.first_name.data,
                             last_name=form.last_name.data,
                             password=form.password.data,
-                            role=form.userType.data,
+                            role='student',
                             needs=form.needs.data)
         db.session.add(student) 
         db.session.commit()
-        flash('You have successfully registered as a ' + form.userType.data + ' ! You may now login.')
+        flash('You have successfully registered as a student ! You may now login.')
 
         # redirect to the login page
         return redirect(url_for('auth.login'))
@@ -45,13 +45,13 @@ def register_tutor():
                             first_name=form.first_name.data,
                             last_name=form.last_name.data,
                             password=form.password.data,
-                            role=form.userType.data,
+                            role='tutor',
                             subject=form.expertise.data,
                             bio=form.bio.data,
                             )
         db.session.add(tutor) 
         db.session.commit()
-        flash('You have successfully registered as a ' + form.userType.data + ' ! You may now login.')
+        flash('You have successfully registered as a tutor ! You may now login.')
 
         # redirect to the login page
         return redirect(url_for('auth.login'))
