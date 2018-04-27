@@ -31,7 +31,8 @@
                     <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
                   {% else %}
                     <li><a href="{{ url_for('home.homepage') }}">Home</a></li>
-                    <li><a href="{{ url_for('auth.register') }}">Register</a></li>
+                    <li><a href="{{ url_for('auth.register_student') }}">Register Student</a></li>
+                    <li><a href="{{ url_for('auth.register_tutor') }}">Register Tutor</a></li>
                     <li><a href="{{ url_for('auth.login') }}">Login</a></li>
                   {% endif %}
               </ul>
@@ -55,7 +56,8 @@
                           <li class="footer-menu-divider">&sdot;</li>
                           <li><a href="{{ url_for('matches.messages') }}">Messages</a></li>
                         {% else %}
-                          <li><a href="{{ url_for('auth.register') }}">Register</a></li>
+                          <li><a href="{{ url_for('auth.register_student') }}">Register Student</a></li>
+                          <li><a href="{{ url_for('auth.register_tutor') }}">Register Tutor</a></li>
                           <li class="footer-menu-divider">&sdot;</li>
                           <li><a href="{{ url_for('auth.login') }}">Login</a></li>
                         {% endif %}

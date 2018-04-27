@@ -2,35 +2,27 @@ from flask import flash, redirect, render_template, url_for, session
 from flask_login import login_required, login_user, logout_user
 
 from . import auth
-from forms import LoginForm, RegistrationForm
+from forms import LoginForm, RegistrationFormTutor, RegistrationFormStudent
 from .. import db
 from ..models import User, Tutor, Student
 
 #for now register everyone as a student
-@auth.route('/register', methods=['GET', 'POST'])
-def register():
+@auth.route('/register_student', methods=['GET', 'POST'])
+def register_student():
     """
     Handle requests to the /register route
     Add an student to the database through the registration form
     """
-    form = RegistrationForm()
+    form = RegistrationFormStudent()
     if form.validate_on_submit():
-        if(form.userType.data=='student'):      
-            student = Student(email=form.email.data,
-                                username=form.username.data,
-                                first_name=form.first_name.data,
-                                last_name=form.last_name.data,
-                                password=form.password.data,
-                                role=form.userType.data)
-            db.session.add(student)
-        elif(form.userType.data=='tutor'):
-            tutor = Tutor(email=form.email.data,
-                                username=form.username.data,
-                                first_name=form.first_name.data,
-                                last_name=form.last_name.data,
-                                password=form.password.data,
-                                role=form.userType.data)
-            db.session.add(tutor) 
+        student = Student(email=form.email.data,
+                            username=form.username.data,
+                            first_name=form.first_name.data,
+                            last_name=form.last_name.data,
+                            password=form.password.data,
+                            role=form.userType.data,
+                            needs=form.needs.data)
+        db.session.add(student) 
         db.session.commit()
         flash('You have successfully registered as a ' + form.userType.data + ' ! You may now login.')
 
@@ -39,6 +31,34 @@ def register():
 
     # load registration template
     return render_template('auth/register.html', form=form, title='Register')
+
+@auth.route('/register_tutor', methods=['GET', 'POST'])
+def register_tutor():
+    """
+    Handle requests to the /register route
+    Add an student to the database through the registration form
+    """
+    form = RegistrationFormTutor()
+    if form.validate_on_submit():
+        tutor = Tutor(email=form.email.data,
+                            username=form.username.data,
+                            first_name=form.first_name.data,
+                            last_name=form.last_name.data,
+                            password=form.password.data,
+                            role=form.userType.data,
+                            subject=form.expertise.data,
+                            bio=form.bio.data,
+                            )
+        db.session.add(tutor) 
+        db.session.commit()
+        flash('You have successfully registered as a ' + form.userType.data + ' ! You may now login.')
+
+        # redirect to the login page
+        return redirect(url_for('auth.login'))
+
+    # load registration template
+    return render_template('auth/register.html', form=form, title='Register')
+
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
