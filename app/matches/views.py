@@ -27,13 +27,14 @@ def messages():
 
 	return render_template('matches/messages.html', title="Messages", messages=messages)
 
-@matches.route('/unmatch/<username>')
+@matches.route('/unmatch/<username>',methods=['POST'])
 @login_required
 def unmatch(username):
 	user = User.query.filter_by(username=username).first()
 	if user is None:
-		return redirect(url_for('matches.messages'))
-	Match.query.filter_by(student_id=current_user.id,tutor_id=user.id).delete()
+		return redirect(url_for('home.dashboard'))
+	print user is None
+	Match.query.filter_by(student_id=user.id,tutor_id=current_user.id).delete()
 	db.session.commit()
 	return redirect(url_for('home.dashboard'))
 

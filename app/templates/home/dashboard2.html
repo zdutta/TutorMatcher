@@ -15,16 +15,22 @@
                       <div class="card-container">
                         {%for student in students%}
                             {%if (student.id, ) in matched_id %}
-                                <div class="card" id="{{student.id}}">{{student.username}}
+                                <div class="card" id="{{student.id}}">
+                                    <h2 class="cardhead" align="left">{{student.username}}</h2>
+                                    <ul class="cardinfo" alirn="right">
+                                        <li><h4>{{student.needs}}</h4></li>
+                                        
+                                    </ul>   
                                 <script type="text/javascript">
                                     $('#{{student.id}}').bind('DOMNodeRemoved', function(e) {
                                             var element = e.target;
                                             var name = element.firstChild.nodeValue;
                                             // var text = element.firstChild.nodeValue + ' removed ';
                                             // alert(text);
-                                            $.post('/unmatch/'+name);
+                                            $.post('/unmatch/{{student.username}}');
                                     });
                                 </script>
+
                             </div>
                             {%endif%}
                         {% endfor %}

@@ -15,14 +15,23 @@
                       <div class="card-container">
                         {%for tutor in tutors%}
                             {%if (tutor.id, ) not in matched_id %}
-                                <div class="card" id="{{tutor.id}}">{{tutor.username}}
+
+                                <div class="card" id="{{tutor.id}}" >
+                                    
+                                    
+                                    <h2 class="cardhead" align="left">{{tutor.username}}</h2>
+                                    
+                                    <ul class="cardinfo" alirn="right">
+                                        <li><h4>{{tutor.subjects}}</h4></li>
+                                        <li><h4>{{tutor.bio}}</h4></li>
+                                    </ul>   
                                 <script type="text/javascript">
                                     $('#{{tutor.id}}').bind('DOMNodeRemoved', function(e) {
                                             var element = e.target;
                                             var name = element.firstChild.nodeValue;
                                             // var text = element.firstChild.nodeValue + ' removed ';
                                             // alert(text);
-                                            $.post('/match/'+name);
+                                            $.post('/match/{{tutor.username}}');
                                     });
                                 </script>
                             </div>

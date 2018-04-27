@@ -19,6 +19,7 @@ class RegistrationFormTutor(FlaskForm):
     confirm_password = PasswordField('Confirm Password')
     expertise = StringField('Areas of expertise:', validators=[DataRequired()])
     bio = StringField('Bio:', validators=[DataRequired()])
+    phonenumber = StringField('Phone Number:', validators=[DataRequired()])
     submit = SubmitField('Register')
 
     def validate_email(self, field):
@@ -43,6 +44,7 @@ class RegistrationFormStudent(FlaskForm):
                                         ])
     confirm_password = PasswordField('Confirm Password')
     needs = StringField('Needs:', validators=[DataRequired()])
+    phonenumber = StringField('Phone Number:', validators=[DataRequired()])
     submit = SubmitField('Register')
     def validate_email(self, field):
         if User.query.filter_by(email=field.data).first():

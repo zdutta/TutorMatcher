@@ -21,7 +21,8 @@ def register_student():
                             last_name=form.last_name.data,
                             password=form.password.data,
                             role='student',
-                            needs=form.needs.data)
+                            needs=form.needs.data,
+                            phonenumber="+1"+form.phonenumber.data)
         db.session.add(student) 
         db.session.commit()
         flash('You have successfully registered as a student ! You may now login.')
@@ -48,7 +49,7 @@ def register_tutor():
                             role='tutor',
                             subjects=form.expertise.data,
                             bio=form.bio.data,
-                            )
+                            phonenumber="+1"+form.phonenumber.data)
         db.session.add(tutor) 
         db.session.commit()
         flash('You have successfully registered as a tutor ! You may now login.')

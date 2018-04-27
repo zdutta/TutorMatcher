@@ -48,6 +48,7 @@ class User(UserMixin,db.Model):
 	last_name = db.Column(db.String(60),index = True)
 	password_hash = db.Column(db.String(128))
 	role = db.Column(db.String(128)) #student or tutor 
+	phonenumber = db.Column(db.String(128))
 	is_admin = db.Column(db.Boolean,default=False)
 	__mapper_args__ = {'polymorphic_identity':'users', 'polymorphic_on' : role}
 

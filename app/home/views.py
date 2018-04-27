@@ -5,6 +5,20 @@ from . import home
 from .. import db
 from ..models import User, Tutor, Student, Match
 
+import os 
+from twilio.rest import Client
+
+account_sid = os.environ["TWILIO_ACCOUNT_SID"]
+auth_token = os.environ["TWILIO_AUTH_TOKEN"]
+
+client=Client(account_sid,auth_token)
+
+# client.messages.create(
+# 	to="+15104023847",
+# 	from_="+15103301938",
+# 	body="Message"
+# 	)
+
 @home.route('/')
 def homepage():
 	return render_template('home/index.html',title="Lets find a match")
@@ -23,8 +37,6 @@ def dashboard():
 	else:
 		students = Student.query.all()
 		matched_id = db.session.query(Match.student_id).filter(Match.tutor_id==current_user.id)
-		print matched_id[0]
-		print current_user.id
 		return render_template('home/dashboard2.html',title="Dashboard",students=students,matched_id=matched_id)
 
 @home.route('/match/<username>',methods=['POST'])
@@ -34,6 +46,13 @@ def match(username):
 	if user is None:
 		return redirect(url_for('home.dashboard'))
 	#current_user.follow(user)
+	print(username)
+	client.messages.create(
+		#to="+15104023847",
+		to=str(user.phonenumber),
+		from_="+15103301938",
+		body=current_user.first_name+" would like to connect with you for scholarly needs including "+current_user.needs + ". Contact them at " + str(current_user.phonenumber))
+
 	match = Match(student_id=current_user.id,tutor_id=user.id)
 	db.session.add(match)
 	db.session.commit()
