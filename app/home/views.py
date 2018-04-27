@@ -8,8 +8,8 @@ from ..models import User, Tutor, Student, Match
 import os 
 from twilio.rest import Client
 
-account_sid = os.environ["TWILIO_ACCOUNT_SID"]
-auth_token = os.environ["TWILIO_AUTH_TOKEN"]
+account_sid = "AC160c8cd7e09e3b94aa97a35379177590"
+auth_token = "d5341877f81de3ce21f573e161c658f3"
 
 client=Client(account_sid,auth_token)
 
