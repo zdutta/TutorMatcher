@@ -1,4 +1,5 @@
 #Tutor Matcher
+Python FlaskWebApp meant to match students and tutors similar to the platform of Tinder.
 
 Pages:
 Homepage
