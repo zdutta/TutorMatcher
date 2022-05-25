@@ -38,7 +38,7 @@ passlib==1.7.1
 pusher==1.7.4
 pyasn1==0.4.2
 pycparser==2.17
-PyJWT==1.6.1
+PyJWT==2.4.0
 pyOpenSSL==17.5.0
 pyparsing==2.2.0
 python-dateutil==2.6.0
